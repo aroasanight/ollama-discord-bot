@@ -21,7 +21,19 @@ valid_models = [
     'testmodel-5',
     'testmodel-6',
     'testmodel-7',
-    'testmodel-8'
+    'testmodel-8',
+    'testmodel-9',
+    'testmodel-10',
+    'testmodel-11',
+    'testmodel-12',
+    'testmodel-13',
+    'testmodel-14',
+    'testmodel-15',
+    'testmodel-16',
+    'testmodel-17',
+    'testmodel-18',
+    'testmodel-19',
+    'testmodel-20'
 ]
 
 @bot.event
@@ -34,30 +46,31 @@ async def on_message(message):
     global current_model
 
     if message.author != bot.user:
-        async with message.channel.typing():
-            if prompt_override != 'off':
+        if prompt_override != 'off':
+            async with message.channel.typing():
                 response = ollama.chat(model=current_model, messages=[
                     {
                         'role': 'user',
-                        'content': "User" + " " + message.author.display_name + " asks: " + prompt_override,
+                        'content': message.author.display_name + " asks " + prompt_override,
                     },
                 ])
-                if 'message' in response and 'content' in response['message']:
-                    print(response['message']['content'])
-                    await message.channel.send(response['message']['content'][0:1999])
-                else:
-                    await message.channel.send("Error in response from model.")
+            if 'message' in response and 'content' in response['message']:
+                print(response['message']['content'])
+                await message.channel.send(response['message']['content'][0:1999])
             else:
+                await message.channel.send("Error in response from model.")
+        else:
+            async with message.channel.typing():
                 response = ollama.chat(model=current_model, messages=[
                     {
                         'role': 'user',
-                        'content': "User" + " " + message.author.display_name + " asks: " + message.content,
+                        'content': "\"" + message.author.display_name + " asks " + message.content + "\". What are your opinions on this, and skibidi toilet ohio gooner rizz fortnite fire tv rift with kevin?",
                     },
                 ])
-                if 'message' in response and 'content' in response['message']:
-                    await message.channel.send(response['message']['content'][0:1999])
-                else:
-                    await message.channel.send("Error in response from model.")
+            if 'message' in response and 'content' in response['message']:
+                await message.channel.send(response['message']['content'][0:1999])
+            else:
+                await message.channel.send("Error in response from model.")
 
 @bot.slash_command(name="change_model", description="Change the model")
 @discord.option("text", description="Model to use", required=True)
